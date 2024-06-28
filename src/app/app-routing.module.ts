@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./comp-b/comp-b.module').then((m) => m.CompBModule),
   },
+  {
+    path: 'closing-time-calculator',
+    loadChildren: () =>
+      import('./closing-time-calculator/closing-time-calculator.module').then((m) => m.ClosingTimeCalculatorModule),
+  },
 ];
 
 @NgModule({
