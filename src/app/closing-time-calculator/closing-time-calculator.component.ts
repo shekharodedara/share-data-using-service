@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-closing-time-calculator',
@@ -6,40 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './closing-time-calculator.component.scss',
 })
 export class ClosingTimeCalculatorComponent implements OnInit {
-  // breakNumber: any = 1;
   effectTimeInterval: any = '';
   currentTimeInterval: any = '';
   breaks: any = [''];
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.resetBreakNumbers();
   }
 
   addBreakTime() {
-    // let breakTimesContainer: any = document.getElementById('break-times');
-    // let breakTimeDiv = document.createElement('div');
-    // breakTimeDiv.classList.add('card');
-    // breakTimeDiv.innerHTML = `
-    // <div class="card-number">${++this.breakNumber}</div>
-    //     <label for="break-start-time">Break Start Time:</label>
-    //     <input type="time" class="break-start-time" step="1" value="00:00:00" />
-    //     <select class="break-start-am-pm mb-9">
-    //         <option value="AM">AM</option>
-    //         <option value="PM">PM</option>
-    //     </select><br />
-    //     <label for="break-end-time">Break End Time:</label>
-    //     <input type="time" class="break-end-time" step="1" value="00:00:00" />
-    //     <select class="break-end-am-pm">
-    //         <option value="AM">AM</option>
-    //         <option value="PM">PM</option>
-    //     </select><br />
-    //     <button #breakDiv class="delete-btn" (click)="deleteBreakTime(breakDiv)">delete</button>
-    // `;
-    // breakTimesContainer.appendChild(breakTimeDiv);
     this.breaks.push('');
-    setTimeout(() => {
-      this.resetBreakNumbers();
-    }, 0);
+    this.resetBreakNumbers();
   }
 
   deleteBreakTime(btn: any) {
@@ -48,33 +27,41 @@ export class ClosingTimeCalculatorComponent implements OnInit {
   }
 
   resetBreakNumbers() {
+    this.cdr.detectChanges();
     const cardNumbers = document.querySelectorAll('.card-number');
     cardNumbers.forEach((number: any, index: any) => {
       number.textContent = index + 1;
     });
-    // this.breakNumber = cardNumbers.length;
     this.breaks = cardNumbers.length ? this.breaks : [];
   }
 
   calculateEndTime() {
-    let startTime: any = (document.getElementById('start-time') as HTMLInputElement).value;
-    let startAmPm: any = (document.getElementById('start-am-pm') as HTMLInputElement).value;
-    let duration: any = (document.getElementById('duration') as HTMLInputElement).value;
+    let startTime: any = (
+      document.getElementById('start-time') as HTMLInputElement
+    ).value;
+    let startAmPm: any = (
+      document.getElementById('start-am-pm') as HTMLInputElement
+    ).value;
+    let duration: any = (
+      document.getElementById('duration') as HTMLInputElement
+    ).value;
 
     let start: any = this.parseTime(startTime, startAmPm);
 
-    let initInputVal: any = (document.getElementById('initial-time') as HTMLInputElement).value;
-    let initAmPM: any = (document.getElementById('initial-am-pm') as HTMLInputElement).value;
+    let initInputVal: any = (
+      document.getElementById('initial-time') as HTMLInputElement
+    ).value;
+    let initAmPM: any = (
+      document.getElementById('initial-am-pm') as HTMLInputElement
+    ).value;
     let initialTime: any = this.parseTime(initInputVal, initAmPM);
 
     let lateDuration: any = start < initialTime ? false : start - initialTime;
 
-    // Parse duration
     let durationParts: any = duration.split(':');
     let durationHours: any = parseInt(durationParts[0]);
     let durationMinutes: any = parseInt(durationParts[1]);
 
-    // Calculate duration time in milliseconds
     let totalDuration: any =
       durationHours * 60 * 60 * 1000 + durationMinutes * 60 * 1000;
     let breakStartTimes: any = document.querySelectorAll('.break-start-time');
@@ -169,7 +156,7 @@ export class ClosingTimeCalculatorComponent implements OnInit {
         filterCurrentTime -
         start -
         (totalBreakTime !== false ? totalBreakTime : 0);
-        (<HTMLElement>document.getElementById('effective-time')).innerHTML =
+      (<HTMLElement>document.getElementById('effective-time')).innerHTML =
         'Effective Time: ' +
         this.formatTime(Math.floor(effectiveTime / (1000 * 60 * 60))) +
         ':' +
