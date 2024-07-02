@@ -1,35 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-closing-time-calculator',
   templateUrl: './closing-time-calculator.component.html',
   styleUrl: './closing-time-calculator.component.scss',
 })
-export class ClosingTimeCalculatorComponent {
-  breakNumber: any = 1;
+export class ClosingTimeCalculatorComponent implements OnInit {
+  // breakNumber: any = 1;
   effectTimeInterval: any = '';
   currentTimeInterval: any = '';
+  breaks: any = [''];
+
+  ngOnInit(): void {
+    this.resetBreakNumbers();
+  }
+
   addBreakTime() {
-    let breakTimesContainer: any = document.getElementById('break-times');
-    let breakTimeDiv = document.createElement('div');
-    breakTimeDiv.classList.add('break-time', 'card');
-    breakTimeDiv.innerHTML = `
-    <div class="card-number">${++this.breakNumber}</div>
-        <label for="break-start-time">Break Start Time:</label>
-        <input type="time" class="break-start-time" step="1" value="00:00:00" />
-        <select class="break-start-am-pm mb-9">
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-        </select><br />
-        <label for="break-end-time">Break End Time:</label>
-        <input type="time" class="break-end-time" step="1" value="00:00:00" />
-        <select class="break-end-am-pm">
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-        </select><br />
-        <button #breakDiv class="delete-btn" (click)="deleteBreakTime(breakDiv)">Delete</button>
-    `;
-    breakTimesContainer.appendChild(breakTimeDiv);
+    // let breakTimesContainer: any = document.getElementById('break-times');
+    // let breakTimeDiv = document.createElement('div');
+    // breakTimeDiv.classList.add('card');
+    // breakTimeDiv.innerHTML = `
+    // <div class="card-number">${++this.breakNumber}</div>
+    //     <label for="break-start-time">Break Start Time:</label>
+    //     <input type="time" class="break-start-time" step="1" value="00:00:00" />
+    //     <select class="break-start-am-pm mb-9">
+    //         <option value="AM">AM</option>
+    //         <option value="PM">PM</option>
+    //     </select><br />
+    //     <label for="break-end-time">Break End Time:</label>
+    //     <input type="time" class="break-end-time" step="1" value="00:00:00" />
+    //     <select class="break-end-am-pm">
+    //         <option value="AM">AM</option>
+    //         <option value="PM">PM</option>
+    //     </select><br />
+    //     <button #breakDiv class="delete-btn" (click)="deleteBreakTime(breakDiv)">delete</button>
+    // `;
+    // breakTimesContainer.appendChild(breakTimeDiv);
+    this.breaks.push('');
+    setTimeout(() => {
+      this.resetBreakNumbers();
+    }, 0);
   }
 
   deleteBreakTime(btn: any) {
@@ -42,7 +52,8 @@ export class ClosingTimeCalculatorComponent {
     cardNumbers.forEach((number: any, index: any) => {
       number.textContent = index + 1;
     });
-    this.breakNumber = cardNumbers.length;
+    // this.breakNumber = cardNumbers.length;
+    this.breaks = cardNumbers.length ? this.breaks : [];
   }
 
   calculateEndTime() {

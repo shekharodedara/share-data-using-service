@@ -6,8 +6,9 @@
   <option value="PM">PM</option></select
 ><br />
 <div id="break-times">
-  <div class="break-time card">
-    <div class="card-number">1</div>
+  @for (item of breaks; track item; let index = $index;){
+  <div class="card">
+    <div class="card-number"></div>
     <label for="break-start-time">Break Start Time:</label>
     <input type="time" class="break-start-time" step="1" value="00:00:00" />
     <select class="break-start-am-pm mb-9">
@@ -20,12 +21,19 @@
       <option value="AM">AM</option>
       <option value="PM">PM</option></select
     ><br />
-    <button #breakDiv class="delete-btn" (click)="deleteBreakTime(breakDiv)">delete</button>
+    <button
+      #breakDiv
+      class="delete-btn"
+      (click)="deleteBreakTime(breakDiv)"
+    >
+      delete
+    </button>
   </div>
+  }
 </div>
 
 <button (click)="addBreakTime()" class="mb-7">Add Break</button><br />
-<div class="break-time card">
+<div class="card">
   <div class="card-default">default</div>
   <label for="duration">Total Timeframe:</label>
   <input type="time" class="mb-7" id="duration" step="60" value="08:30" /><br />
