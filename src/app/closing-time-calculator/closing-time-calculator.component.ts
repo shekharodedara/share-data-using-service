@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 
 @Component({
   selector: 'app-closing-time-calculator',
@@ -8,12 +8,11 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 export class ClosingTimeCalculatorComponent implements OnInit {
   effectTimeInterval: any = '';
   currentTimeInterval: any = '';
-  breaks: any = [''];
-
-  constructor(private cdr: ChangeDetectorRef) {}
+  breaks: any = [];
+  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    this.resetBreakNumbers();
+    this.addBreakTime();
   }
 
   addBreakTime() {
@@ -28,11 +27,13 @@ export class ClosingTimeCalculatorComponent implements OnInit {
 
   resetBreakNumbers() {
     this.cdr.detectChanges();
-    const cardNumbers = document.querySelectorAll('.card-number');
-    cardNumbers.forEach((number: any, index: any) => {
-      number.textContent = index + 1;
-    });
-    this.breaks = cardNumbers.length ? this.breaks : [];
+    if (typeof document !== 'undefined') {
+      const cardNumbers = document.querySelectorAll('.card-number');
+      cardNumbers.forEach((number: any, index: any) => {
+        number.textContent = index + 1;
+      });
+      this.breaks = cardNumbers.length ? this.breaks : [];
+    }
   }
 
   calculateEndTime() {
