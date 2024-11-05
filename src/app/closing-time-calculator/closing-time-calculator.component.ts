@@ -112,9 +112,9 @@ export class ClosingTimeCalculatorComponent implements OnInit {
     this.getEndTime(endHours, endMinutes, endSeconds, endAmPm);
 
     clearInterval(this.effectTimeInterval);
-    this.getEffectiveTime(start, totalBreakTime);
+    this.getEffectiveTime(start, totalBreakTime, totalDuration);
     this.effectTimeInterval = setInterval(() => {
-      this.getEffectiveTime(start, totalBreakTime);
+      this.getEffectiveTime(start, totalBreakTime, totalDuration);
     }, 1000);
 
     this.getTotalBreakTime(totalBreakTime);
@@ -140,7 +140,7 @@ export class ClosingTimeCalculatorComponent implements OnInit {
       endAmPm;
   }
 
-  getEffectiveTime(start: any, totalBreakTime: any) {
+  getEffectiveTime(start: any, totalBreakTime: any, totalDuration: any) {
     const filterCurrentTime: any = new Date(
       new Date().getFullYear(),
       new Date().getMonth(),
@@ -149,7 +149,7 @@ export class ClosingTimeCalculatorComponent implements OnInit {
       new Date().getMinutes(),
       new Date().getSeconds()
     );
-    if (start.getHours() > filterCurrentTime.getHours()) {
+    if (start > filterCurrentTime) {
       (<HTMLElement>document.getElementById('effective-time')).innerHTML =
         'Effective Time: Launch time cannot be greater than current time!';
     } else {
@@ -166,11 +166,30 @@ export class ClosingTimeCalculatorComponent implements OnInit {
         ) +
         ':' +
         this.formatTime(Math.floor((effectiveTime % (1000 * 60)) / 1000));
+      this.getOutstandingTime(effectiveTime, totalDuration);
     }
+  }
+
+  getOutstandingTime(effectiveTime: any, totalDuration: any) {
+    const outstandingTime = totalDuration - effectiveTime;
+    (<HTMLElement>document.getElementById('outstanding-time')).innerHTML =
+      'Outstanding Time: ' +
+      this.formatTime(Math.floor(outstandingTime / (1000 * 60 * 60))) +
+      ':' +
+      this.formatTime(
+        Math.floor((outstandingTime % (1000 * 60 * 60)) / (1000 * 60))
+      ) +
+      ':' +
+      this.formatTime(Math.floor((outstandingTime % (1000 * 60)) / 1000));
   }
 
   getTotalBreakTime(totalBreakTime: any) {
     if (totalBreakTime !== false) {
+      if (totalBreakTime == 0) {
+        (<HTMLElement>document.getElementById('total-break-time')).innerHTML =
+          '';
+        return;
+      }
       (<HTMLElement>document.getElementById('total-break-time')).innerHTML =
         'Overall Break Time: ' +
         this.formatTime(Math.floor(totalBreakTime / (1000 * 60 * 60))) +
