@@ -15,6 +15,10 @@ export class ClosingTimeCalculatorComponent implements OnInit {
     this.addBreakTime();
   }
 
+  validate12HourFormat(event: any) {
+    event.value = event.value.split(':')[0] <= 12 ? event.value : '00:00:00';
+  }
+
   addBreakTime() {
     this.breaks.push('');
     this.resetBreakNumbers();
@@ -171,7 +175,8 @@ export class ClosingTimeCalculatorComponent implements OnInit {
   }
 
   getOutstandingTime(effectiveTime: any, totalDuration: any) {
-    const outstandingTime = totalDuration - effectiveTime;
+    const outstandingTime =
+      totalDuration - effectiveTime < 0 ? 0 : totalDuration - effectiveTime;
     (<HTMLElement>document.getElementById('outstanding-time')).innerHTML =
       'Outstanding Time: ' +
       this.formatTime(Math.floor(outstandingTime / (1000 * 60 * 60))) +

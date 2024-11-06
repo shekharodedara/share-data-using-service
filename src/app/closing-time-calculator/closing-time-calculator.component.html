@@ -1,7 +1,14 @@
 <a [routerLink]="['/comp-a']">go to A</a>
 <h2>Closing Time Calculator</h2>
 <label for="start-time">Launch Time:</label>
-<input type="time" id="start-time" step="1" class="mb-7" value="10:30:00" />
+<input
+  type="time"
+  id="start-time"
+  step="1"
+  class="mb-7"
+  value="10:30:00"
+  (input)="validate12HourFormat($event.target)"
+/>
 <select id="start-am-pm">
   <option value="AM">AM</option>
   <option value="PM">PM</option></select
@@ -11,13 +18,25 @@
   <div class="card">
     <div class="card-number"></div>
     <label for="break-start-time">Break Start Time:</label>
-    <input type="time" class="break-start-time" step="1" value="00:00:00" />
+    <input
+      type="time"
+      class="break-start-time"
+      step="1"
+      value="00:00:00"
+      (input)="validate12HourFormat($event.target)"
+    />
     <select class="break-start-am-pm mb-9">
       <option value="AM">AM</option>
       <option value="PM">PM</option></select
     ><br />
     <label for="break-end-time">Break End Time:</label>
-    <input type="time" class="break-end-time" step="1" value="00:00:00" />
+    <input
+      type="time"
+      class="break-end-time"
+      step="1"
+      value="00:00:00"
+      (input)="validate12HourFormat($event.target)"
+    />
     <select class="break-end-am-pm">
       <option value="AM">AM</option>
       <option value="PM">PM</option></select
